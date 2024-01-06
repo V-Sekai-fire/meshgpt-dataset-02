@@ -36,4 +36,7 @@ node3d-or-subclass ::= "Node3D" | "AudioListener3D" | "AudioStreamPlayer3D" | "B
 
 non-Node3D-type ::= node-type | "Node2D" | "Control"
 
+# TODO Node2D and Control
+# FIXME: Fix bugs with losing transforms.
+
 node-type ::= "Node" | "AnimationMixer" | "AudioStreamPlayer" | "CanvasItem" | "CanvasLayer"             | "EditorFileSystem" | "EditorPlugin" | "EditorResourcePreview" | "HTTPRequest"             | "InstancePlaceholder" | "MissingNode" | "MultiplayerSpawner" | "MultiplayerSynchronizer"             | "NavigationAgent2D" | "NavigationAgent3D" | "RenIK" | "ResourcePreloader"             | "ShaderGlobalsOverride" | "SkeletonIK3D" | "Speech" | "SpeechProcessor" | "Timer"             | "Viewport" | "WorldEnvironment"
