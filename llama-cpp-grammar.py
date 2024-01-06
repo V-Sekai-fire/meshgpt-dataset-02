@@ -34,7 +34,7 @@ def get_model_file(model_url):
 
     return model_path
 
-model_url = "https://huggingface.co/TheBloke/Nous-Hermes-2-SOLAR-10.7B-GGUF/resolve/main/nous-hermes-2-solar-10.7b.Q5_K_M.gguf?download=true"
+model_url = "https://huggingface.co/TheBloke/OpenHermes-2.5-Mistral-7B-GGUF/resolve/main/openhermes-2.5-mistral-7b.Q4_K_M.gguf?download=true"
 model_path = get_model_file(model_url)
 with open("json_arr.gbnf", 'r') as file:
     grammar_file_contents = file.read()
