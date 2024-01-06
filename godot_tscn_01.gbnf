@@ -1,8 +1,12 @@
-root ::= gd-scene-attr node-newlines node+
+root ::= gd-scene-attr node-newlines root-node node*
+
+root-node ::= "[" "node" ws "name=" string ws "type=" string "]" transform-attr? node-newlines
+
+child-node ::= "[" "node" ws "name=" string ws "type=" string ws parent-attr "]" transform-attr? node-newlines
 
 gd-scene-attr ::= "[" "gd_scene" ws "format=" number ws "uid=" quoted-uid "]"
 
-node ::= "[" "node" ws "name=" string ws "type=" string ws parent-attr? "]" transform-attr? node-newlines
+node ::= root-node | child-node
 
 parent-attr ::= "parent=" string
 

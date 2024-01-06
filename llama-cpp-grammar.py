@@ -46,10 +46,12 @@ max_tokens = -1
 llm = Llama(model_path=model_path, chat_format="chatml")
 
 prompt = """\
-[gd_scene format=3 uid="uid://cuwj83nv5g8sm"]
+[gd_scene format=3 uid="uid://3josuuo5ufv6"]
 
 [node name="HelloWorld" type="Node3D"]
 transform = Transform3D(0.67816, 0, 0.734915, 0, 1, 0, -0.734915, 0, 0.67816, 0, 0, 0)
+
+[node name="Node3D" type="Node3D" parent="."]
 """
 
 def get_response(prompt):
