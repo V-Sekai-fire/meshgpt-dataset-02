@@ -1,0 +1,5 @@
+[gd_scene load_steps=4 format=3 uid="uid://cecaux1sm7mo0"]
+[node name="Ball" type="RigidBody3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 1, 3)

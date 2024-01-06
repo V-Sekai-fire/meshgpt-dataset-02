@@ -43,23 +43,17 @@ with open("godot_tscn_01.gbnf", 'r') as file:
 grammar = LlamaGrammar.from_string(grammar_file_contents)
 
 max_tokens = -1
-llm = Llama(model_path=model_path, chat_format="chatml")
+llm = Llama(model_path=model_path, chat_format="chatml", n_ctx=4096)
 
-prompt = """\
-[gd_scene format=3 uid="uid://3josuuo5ufv6"]
-
-[node name="HelloWorld" type="Node3D"]
-transform = Transform3D(0.67816, 0, 0.734915, 0, 1, 0, -0.734915, 0, 0.67816, 0, 0, 0)
-
-[node name="Node3D" type="Node3D" parent="."]
-"""
+with open("godot_01_tscn/godot_01_scene_05.tscn", 'r') as file:
+    prompt = file.read()
 
 def get_response(prompt):
     response = llm.create_chat_completion(
         grammar=grammar,
         max_tokens=max_tokens,
         messages = [
-            {"role": "system", "content": "Echo the last Godot Engine 4.2 tscn scene."},
+            {"role": "system", "content": "The task is to echo back the provided Godot Engine 4.2 tscn scene description using the given parsing grammar rules.: {}".format(grammar_file_contents)},
             {
                 "role": "user",
                 "content": prompt
@@ -69,4 +63,15 @@ def get_response(prompt):
     return response['choices'][0]["message"]["content"]
 
 formatted_json_response = get_response(prompt)
-print(formatted_json_response)
+
+import difflib
+
+differ = difflib.Differ()
+diff = differ.compare(
+    prompt.splitlines(keepends=True),
+    formatted_json_response.splitlines(keepends=True)
+)
+
+print('Differences:')
+for line in diff:
+    print(line)
