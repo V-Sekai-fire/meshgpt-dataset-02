@@ -36,22 +36,28 @@ def get_model_file(model_url):
 
 model_url = "https://huggingface.co/TheBloke/OpenHermes-2.5-Mistral-7B-GGUF/resolve/main/openhermes-2.5-mistral-7b.Q4_K_M.gguf?download=true"
 model_path = get_model_file(model_url)
+
 with open("json_arr.gbnf", 'r') as file:
     grammar_file_contents = file.read()
+
 grammar = LlamaGrammar.from_string(grammar_file_contents)
-import sys
 
 max_tokens = -1
-prompt = "Please provide a JSON-formatted array containing the names of tourist attractions located in Vancouver, Canada. Each attraction should be a string:"
 llm = Llama(model_path=model_path)
-response = llm(prompt, grammar=grammar, max_tokens=max_tokens)
-json_output = json.loads(response['choices'][0]['text'])
-print(json.dumps(json_output, indent=4))
-while True:
-    prompt = input("Enter your prompt (or type 'exit' to quit): ")
-    if prompt.lower() == 'exit': 
-        print("Exiting...")
-        break
+
+def get_formatted_json_response(prompt):
     response = llm(prompt, grammar=grammar, max_tokens=max_tokens)
     json_output = json.loads(response['choices'][0]['text'])
-    print(json.dumps(json_output, indent=4))
+    return json.dumps(json_output, indent=4)
+
+prompt = "Please provide a JSON-formatted array containing the names of tourist attractions located in Vancouver, Canada. Each attraction should be a string:"
+formatted_json_response = get_formatted_json_response(prompt)
+print(formatted_json_response)
+
+while True:
+    user_input = input("Enter your prompt (or type 'exit' to quit): ")
+    if user_input.lower() == 'exit': 
+        print("Exiting...")
+        break
+    formatted_json_response = get_formatted_json_response(user_input)
+    print(formatted_json_response)
