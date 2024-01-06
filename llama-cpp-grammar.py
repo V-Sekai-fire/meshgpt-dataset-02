@@ -47,10 +47,19 @@ def get_grammar(grammar_url):
     return LlamaGrammar.from_string(response.text)
 
 grammar = get_grammar(grammar_url)
-prompt = "JSON list of name strings of attractions in Vancouver, Canada:"
-max_tokens = -1
-response = llm(prompt, grammar=grammar, max_tokens=max_tokens)
+import sys
 
-print(response)
+max_tokens = -1
+prompt = "JSON list of name strings of attractions in Vancouver, Canada:"
+response = llm(prompt, grammar=grammar, max_tokens=max_tokens)
 json_output = json.loads(response['choices'][0]['text'])
 print(json.dumps(json_output, indent=4))
+
+while True:
+    prompt = input("Enter your prompt (or type 'exit' to quit): ")
+    if prompt.lower() == 'exit': 
+        print("Exiting...")
+        break
+    response = llm(prompt, grammar=grammar, max_tokens=max_tokens)
+    json_output = json.loads(response['choices'][0]['text'])
+    print(json.dumps(json_output, indent=4))
