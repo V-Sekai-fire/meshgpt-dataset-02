@@ -49,6 +49,7 @@ prompt = """\
 [gd_scene format=3 uid="uid://cuwj83nv5g8sm"]
 
 [node name="HelloWorld" type="Node3D"]
+transform = Transform3D(0.67816, 0, 0.734915, 0, 1, 0, -0.734915, 0, 0.67816, 0, 0, 0)
 """
 
 def get_response(prompt):
@@ -56,7 +57,7 @@ def get_response(prompt):
         grammar=grammar,
         max_tokens=max_tokens,
         messages = [
-            {"role": "system", "content": "Echo the message made by the user."},
+            {"role": "system", "content": "Echo the last Godot Engine 4.2 tscn scene."},
             {
                 "role": "user",
                 "content": prompt
@@ -67,11 +68,3 @@ def get_response(prompt):
 
 formatted_json_response = get_response(prompt)
 print(formatted_json_response)
-
-while True:
-    user_input = input("Enter your prompt (or type 'exit' to quit): ")
-    if user_input.lower() == 'exit': 
-        print("Exiting...")
-        break
-    formatted_json_response = get_response(user_input)
-    print(formatted_json_response)
