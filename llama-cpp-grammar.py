@@ -42,7 +42,7 @@ grammar = LlamaGrammar.from_string(grammar_file_contents)
 import sys
 
 max_tokens = -1
-prompt = "JSON list of name strings of attractions in Vancouver, Canada:"
+prompt = "Please provide a JSON-formatted array containing the names of tourist attractions located in Vancouver, Canada. Each attraction should be a string:"
 llm = Llama(model_path=model_path)
 response = llm(prompt, grammar=grammar, max_tokens=max_tokens)
 json_output = json.loads(response['choices'][0]['text'])
