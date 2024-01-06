@@ -1,0 +1,16 @@
+# Definition of the grammar to parse the given scene format
+#
+# [gd_scene format=3 uid="uid://cuwj83nv5g8sm"]
+#
+# [node name="HelloWorld" type="Node3D"]
+
+root ::= gd-scene-attr node-newlines node+
+gd-scene-attr ::= "[" "gd_scene" " " "format=" number " " "uid=" uid "]"
+node ::= "[" "node" " " "name=" string " " "type=" string "]" node-newlines
+node-newlines ::= new-line*
+
+# Lexical tokens
+string ::= "\"" [^"]* "\""
+number ::= [0-9]+
+uid ::= "uid://" [a-z0-9]+
+new-line ::= "\r\n" | "\n"
