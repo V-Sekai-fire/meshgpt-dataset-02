@@ -1,13 +1,9 @@
 # Grammar Rules
 root ::= gd-scene-attr node-newlines root-node node*
 
-root-node ::= "[" "node" ws "name=" string ws "type=" string "]" transform-attr? node-newlines
+root-node ::= "[" "node" ws "name=" string ws "type=" string "]" node-attributes? node-newlines
 
-child-node ::= child-node-with-transform | child-node-without-transform
-
-child-node-with-transform ::= "[" "node" ws "name=" string ws "type=" node3d-or-subclass "]" transform-attr node-newlines
-
-child-node-without-transform ::= "[" "node" ws "name=" string ws "type=" non-Node3D-type ws parent-attr "]" node-newlines
+child-node ::= "[" "node" ws "name=" string ws "type=" string ws parent-attr "]" node-attributes? node-newlines
 
 gd-scene-attr ::= "[" "gd_scene" ws "format=" number ws "uid=" quoted-uid "]"
 
@@ -15,11 +11,19 @@ node ::= root-node | child-node
 
 parent-attr ::= "parent=" string
 
+node-attributes ::= transform-attr? other-attrs?
+
 transform-attr ::= ws "transform" ws "=" ws "Transform(" vector "," ws vector "," ws vector "," ws position ")"
+
+other-attrs ::= ws ("instance" | "instance_placeholder" | "owner" | "index" | "groups") ws "=" ws value
 
 vector ::= number ws "," ws number ws "," ws number
 
 position ::= number ws "," ws number ws "," ws number
+
+value ::= string | number | brackets-list
+
+brackets-list ::= "[" value ("," value)* "]"
 
 node-newlines ::= new-line*
 
@@ -32,11 +36,8 @@ new-line ::= "\r\n" | "\n"
 ws ::= " "+
 
 # Node type definitions
-node3d-or-subclass ::= "Node3D" | "AudioListener3D" | "AudioStreamPlayer3D" | "BoneAttachment3D" | "Camera3D" | "CollisionObject3D" | "CollisionPolygon3D" | "CollisionShape3D"                     | "GridMap" | "ImporterMeshInstance3D" | "Joint3D" | "LightmapProbe"                     | "Marker3D" | "NavigationLink3D" | "NavigationObstacle3D" | "NavigationRegion3D"                      | "OccluderInstance3D" | "OpenXRHand" | "Path3D" | "PathFollow3D"                      | "RayCast3D" | "RemoteTransform3D" | "ShapeCast3D" | "Skeleton3D"                      | "SpringArm3D" | "VehicleWheel3D" | "VisualInstance3D" | "XRNode3D"                      | "XROrigin3D" | "LBFGSBSolver" | "ManyBoneIK3D"
+node3d-or-subclass ::= "Node3D" | "AudioListener3D" | "AudioStreamPlayer3D" | "BoneAttachment3D" | "Camera3D" | "CollisionObject3D" | "CollisionPolygon3D" | "CollisionShape3D" | "GridMap" | "ImporterMeshInstance3D" | "Joint3D" | "LightmapProbe" | "Marker3D" | "NavigationLink3D" | "NavigationObstacle3D" | "NavigationRegion3D" | "OccluderInstance3D" | "OpenXRHand" | "Path3D" | "PathFollow3D" | "RayCast3D" | "RemoteTransform3D" | "ShapeCast3D" | "Skeleton3D" | "SpringArm3D" | "VehicleWheel3D" | "VisualInstance3D" | "XRNode3D" | "XROrigin3D" | "LBFGSBSolver" | "ManyBoneIK3D"
 
 non-Node3D-type ::= node-type | "Node2D" | "Control"
 
-# TODO Node2D and Control
-# FIXME: Fix bugs with losing transforms.
-
-node-type ::= "Node" | "AnimationMixer" | "AudioStreamPlayer" | "CanvasItem" | "CanvasLayer"             | "EditorFileSystem" | "EditorPlugin" | "EditorResourcePreview" | "HTTPRequest"             | "InstancePlaceholder" | "MissingNode" | "MultiplayerSpawner" | "MultiplayerSynchronizer"             | "NavigationAgent2D" | "NavigationAgent3D" | "RenIK" | "ResourcePreloader"             | "ShaderGlobalsOverride" | "SkeletonIK3D" | "Speech" | "SpeechProcessor" | "Timer"             | "Viewport" | "WorldEnvironment"
+node-type ::= "Node" | "AnimationMixer" | "AudioStreamPlayer" | "CanvasItem" | "CanvasLayer" | "EditorFileSystem" | "EditorPlugin" | "EditorResourcePreview" | "HTTPRequest" | "InstancePlaceholder" | "MissingNode" | "MultiplayerSpawner" | "MultiplayerSynchronizer" | "NavigationAgent2D" | "NavigationAgent3D" | "RenIK" | "ResourcePreloader" | "ShaderGlobalsOverride" | "SkeletonIK3D" | "Speech" | "SpeechProcessor" | "Timer" | "Viewport" | "WorldEnvironment"
