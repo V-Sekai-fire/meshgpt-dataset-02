@@ -36,16 +36,9 @@ def get_model_file(model_url):
 
 model_url = "https://huggingface.co/TheBloke/Nous-Hermes-2-SOLAR-10.7B-GGUF/resolve/main/nous-hermes-2-solar-10.7b.Q5_K_M.gguf?download=true"
 model_path = get_model_file(model_url)
-
-grammar_url = "https://raw.githubusercontent.com/ggerganov/llama.cpp/master/grammars/json_arr.gbnf"
-
-@lru_cache(maxsize=1)
-def get_grammar(grammar_url):
-    response = httpx.get(grammar_url)
-    response.raise_for_status()
-    return LlamaGrammar.from_string(response.text)
-
-grammar = get_grammar(grammar_url)
+with open("json_arr.gbnf", 'r') as file:
+    grammar_file_contents = file.read()
+grammar = LlamaGrammar.from_string(grammar_file_contents)
 import sys
 
 max_tokens = -1
@@ -54,7 +47,6 @@ llm = Llama(model_path=model_path)
 response = llm(prompt, grammar=grammar, max_tokens=max_tokens)
 json_output = json.loads(response['choices'][0]['text'])
 print(json.dumps(json_output, indent=4))
-
 while True:
     prompt = input("Enter your prompt (or type 'exit' to quit): ")
     if prompt.lower() == 'exit': 
