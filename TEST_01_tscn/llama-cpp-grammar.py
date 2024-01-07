@@ -43,7 +43,7 @@ with open("godot_tscn_01.gbnf", 'r') as file:
 grammar = LlamaGrammar.from_string(grammar_file_contents)
 
 max_tokens = -1
-llm = Llama(model_path=model_path, chat_format="chatml", n_ctx=4096)
+llm = Llama(model_path=model_path, chat_format="chatml", n_ctx=4096, n_gpu_layers=99)
 
 with open("godot_01_tscn/godot_01_scene_06.tscn", 'r') as file:
     prompt = file.read()

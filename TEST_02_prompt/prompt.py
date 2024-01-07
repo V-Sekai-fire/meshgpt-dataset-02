@@ -43,7 +43,7 @@ with open("json_arr.gbnf", 'r') as file:
 grammar = LlamaGrammar.from_string(grammar_file_contents)
 
 max_tokens = -1
-llm = Llama(model_path=model_path, chat_format="chatml")
+llm = Llama(model_path=model_path, chat_format="chatml", n_ctx=4096, n_gpu_layers=99)
 
 def get_response(prompt):
     response = llm.create_chat_completion(
