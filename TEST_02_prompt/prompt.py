@@ -50,7 +50,7 @@ def get_response(prompt, output):
         grammar=grammar,
         max_tokens=max_tokens,
         messages = [
-            {"role": "system", "content": "Your replies are json list of name values dictionaries."},
+            {"role": "system", "content": "Your replies are json lists."},
             {
                 "role": "user",
                 "content": prompt
