@@ -45,24 +45,47 @@ grammar = LlamaGrammar.from_string(grammar_file_contents)
 max_tokens = -1
 llm = Llama(model_path=model_path, chat_format="chatml", n_ctx=4096, n_gpu_layers=99)
 
-def get_response(prompt):
+def get_response(prompt, output):
     response = llm.create_chat_completion(
         grammar=grammar,
         max_tokens=max_tokens,
         messages = [
-            {"role": "system", "content": "You dilligently accomplish your tasks."},
+            {"role": "system", "content": "Your replies are json list of name values dictionaries."},
             {
                 "role": "user",
                 "content": prompt
             }
         ]
     )
-    return response['choices'][0]["message"]["content"]
+    output.append(response['choices'][0]["message"]["content"])
+
+import time
+import threading
+
+def threaded_get_response(user_input, output):
+    response_thread = threading.Thread(target=get_response, args=(user_input, output))
+    response_thread.start()
+    
+    response_thread.join(timeout=5)
+    
+    if response_thread.is_alive():
+        print("The operation exceeded 5 seconds.")
+        response_thread.join()
 
 while True:
-    user_input = input("Enter your prompt like 'List some cat names as a json list.' (or type 'exit' to quit): ")
-    if user_input.lower() == 'exit': 
+    user_input = input("Enter your prompt like 'List some cat names.' (or type 'exit' to quit): ")
+    if user_input.lower() == 'exit':
         print("Exiting...")
         break
-    formatted_json_response = get_response(user_input)
-    print(formatted_json_response)
+    
+    formatted_json_response = []
+    
+    start_time = time.time()
+    
+    threaded_get_response(user_input, formatted_json_response)
+    
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    
+    if elapsed_time <= 5 and formatted_json_response:
+        print(formatted_json_response[0]) 
