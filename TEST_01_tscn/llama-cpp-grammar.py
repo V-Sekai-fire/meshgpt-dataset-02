@@ -37,7 +37,7 @@ def get_model_file(model_url):
 model_url = "https://huggingface.co/TheBloke/OpenHermes-2.5-Mistral-7B-GGUF/resolve/main/openhermes-2.5-mistral-7b.Q4_K_M.gguf?download=true"
 model_path = get_model_file(model_url)
 
-with open("godot_tscn_01.gbnf", 'r') as file:
+with open("godot_tscn_02.gbnf", 'r') as file:
     grammar_file_contents = file.read()
 
 grammar = LlamaGrammar.from_string(grammar_file_contents)
